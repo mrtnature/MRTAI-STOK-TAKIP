@@ -37,6 +37,7 @@ export default function RootLayout() {
       <Stack.Screen name="screens/production" />
       <Stack.Screen name="screens/sales" />
       <Stack.Screen name="screens/customers" />
+      <Stack.Screen name="screens/settings" />
     </Stack>
   );
 }
