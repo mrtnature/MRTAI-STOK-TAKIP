@@ -73,7 +73,7 @@ export default function HomeScreen() {
             <TouchableOpacity
               key={item.id}
               style={[styles.menuCard, { borderLeftColor: item.color }]}
-              onPress={() => router.push(item.route as any)}
+              onPress={() => handleNavigation(item.route)}
               activeOpacity={0.7}
             >
               <View style={[styles.iconContainer, { backgroundColor: item.color + '20' }]}>
