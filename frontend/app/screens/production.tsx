@@ -326,7 +326,22 @@ export default function ProductionScreen() {
                 return (
                   <View key={index} style={styles.itemRow}>
                     <View style={styles.itemFields}>
-                      <Text style={styles.itemLabel}>Ürün: {selectedStock?.name}</Text>
+                      <Text style={styles.itemLabel}>Ürün Seç:</Text>
+                      <View style={styles.pickerContainer}>
+                        <Picker
+                          selectedValue={item.stock_id}
+                          onValueChange={(value) => updateTemplateItem(index, 'stock_id', value)}
+                          style={styles.picker}
+                        >
+                          {stocks.map((stock) => (
+                            <Picker.Item
+                              key={stock.id}
+                              label={`${stock.name} (${stock.qty} ${stock.unit} - ${stock.price}₺)`}
+                              value={stock.id}
+                            />
+                          ))}
+                        </Picker>
+                      </View>
                       <TextInput
                         style={[styles.input, styles.smallInput]}
                         placeholder="Miktar"
@@ -336,6 +351,9 @@ export default function ProductionScreen() {
                         }
                         keyboardType="numeric"
                       />
+                      <Text style={styles.itemLabel}>
+                        Birim Fiyat: {item.unit_price.toFixed(2)} ₺
+                      </Text>
                       <Text style={styles.itemLabel}>
                         Ara Toplam: {item.subtotal.toFixed(2)} ₺
                       </Text>
