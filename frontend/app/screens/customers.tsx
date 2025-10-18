@@ -131,61 +131,78 @@ export default function CustomersScreen() {
           </View>
         </View>
 
-        {customers.map((customer) => (
-          <View key={customer.id} style={styles.card}>
-            <View style={styles.cardHeader}>
-              <View style={styles.customerInfo}>
-                <Text style={styles.customerName}>{customer.name}</Text>
-                <Text style={styles.customerCompany}>{customer.company}</Text>
-              </View>
-              <View
-                style={[
-                  styles.statusBadge,
-                  { backgroundColor: getStatusColor(customer.status) + '20' },
-                ]}
-              >
-                {getStatusIcon(customer.status)}
-                <Text
+        {customers.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyText}>Henüz müşteri bulunmuyor</Text>
+            <Text style={styles.emptySubtext}>
+              Üretim süreçlerinde "Üret" dediğinizde müşteri bilgileri buraya eklenecek
+            </Text>
+          </View>
+        ) : (
+          customers.map((customer) => (
+            <View key={customer.id} style={styles.card}>
+              <View style={styles.cardHeader}>
+                <View style={styles.customerInfo}>
+                  <Text style={styles.customerName}>{customer.full_name}</Text>
+                  {customer.email && (
+                    <Text style={styles.customerCompany}>{customer.email}</Text>
+                  )}
+                </View>
+                <View
                   style={[
-                    styles.statusText,
-                    { color: getStatusColor(customer.status) },
+                    styles.statusBadge,
+                    { backgroundColor: getStatusColor(customer.status) + '20' },
                   ]}
                 >
-                  {getStatusText(customer.status)}
-                </Text>
+                  {getStatusIcon(customer.status)}
+                  <Text
+                    style={[
+                      styles.statusText,
+                      { color: getStatusColor(customer.status) },
+                    ]}
+                  >
+                    {getStatusText(customer.status)}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.contactInfo}>
+                {customer.phone && (
+                  <View style={styles.contactRow}>
+                    <Text style={styles.contactLabel}>📞</Text>
+                    <Text style={styles.contactText}>{customer.phone}</Text>
+                  </View>
+                )}
+                {customer.email && (
+                  <View style={styles.contactRow}>
+                    <Text style={styles.contactLabel}>✉️</Text>
+                    <Text style={styles.contactText}>{customer.email}</Text>
+                  </View>
+                )}
+                {customer.address && (
+                  <View style={styles.contactRow}>
+                    <Text style={styles.contactLabel}>📍</Text>
+                    <Text style={styles.contactText}>{customer.address}</Text>
+                  </View>
+                )}
+              </View>
+
+              <View style={styles.statsRow}>
+                <View style={styles.stat}>
+                  <Text style={styles.statNumber}>{customer.totalOrders}</Text>
+                  <Text style={styles.statText}>Sipariş</Text>
+                </View>
+                <View style={styles.divider} />
+                <View style={styles.stat}>
+                  <Text style={styles.statNumber}>
+                    {(customer.totalSpent / 1000).toFixed(0)}K₺
+                  </Text>
+                  <Text style={styles.statText}>Harcama</Text>
+                </View>
               </View>
             </View>
-
-            <View style={styles.contactInfo}>
-              <View style={styles.contactRow}>
-                <Text style={styles.contactLabel}>📞</Text>
-                <Text style={styles.contactText}>{customer.phone}</Text>
-              </View>
-              <View style={styles.contactRow}>
-                <Text style={styles.contactLabel}>✉️</Text>
-                <Text style={styles.contactText}>{customer.email}</Text>
-              </View>
-            </View>
-
-            <View style={styles.statsRow}>
-              <View style={styles.stat}>
-                <Text style={styles.statNumber}>{customer.totalOrders}</Text>
-                <Text style={styles.statText}>Sipariş</Text>
-              </View>
-              <View style={styles.divider} />
-              <View style={styles.stat}>
-                <Text style={styles.statNumber}>
-                  {(customer.totalSpent / 1000).toFixed(0)}K₺
-                </Text>
-                <Text style={styles.statText}>Harcama</Text>
-              </View>
-            </View>
-
-            <TouchableOpacity style={styles.detailsButton}>
-              <Text style={styles.detailsButtonText}>Detaylı Bilgi</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
+          ))
+        )}
       </ScrollView>
     </SafeAreaView>
   );
