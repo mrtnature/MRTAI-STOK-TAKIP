@@ -626,6 +626,16 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontWeight: '600',
   },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
+    borderRadius: 8,
+    marginBottom: 12,
+    backgroundColor: '#f8fafc',
+  },
+  picker: {
+    height: 50,
+  },
   smallInput: {
     marginBottom: 8,
   },
