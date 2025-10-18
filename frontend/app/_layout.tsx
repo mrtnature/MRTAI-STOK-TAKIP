@@ -1,30 +1,36 @@
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
-import * as Notifications from 'expo-notifications';
-import { initDatabase } from '@/db/database';
-
-// Bildirim yapılandırması
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+import { Platform } from 'react-native';
 
 export default function RootLayout() {
   useEffect(() => {
-    // Veritabanını başlat
-    initDatabase();
-
-    // Bildirim izinlerini iste
-    async function requestPermissions() {
-      const { status } = await Notifications.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Bildirim izni verilmedi');
-      }
+    if (Platform.OS !== 'web') {
+      // Native platformlarda SQLite ve bildirimler kurulumu
+      const setupNative = async () => {
+        const Notifications = require('expo-notifications');
+        const { initDatabase } = require('@/db/database');
+        
+        // Bildirim yapılandırması
+        Notifications.setNotificationHandler({
+          handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+          }),
+        });
+        
+        // Veritabanını başlat
+        await initDatabase();
+        
+        // Bildirim izinlerini iste
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('Bildirim izni verilmedi');
+        }
+      };
+      
+      setupNative();
     }
-    requestPermissions();
   }, []);
 
   return (
