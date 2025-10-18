@@ -26,4 +26,10 @@ config.maxWorkers = 2;
 config.resolver.platforms = ['ios', 'android', 'web'];
 config.resolver.resolverMainFields = ['react-native', 'browser', 'main'];
 
+// Web platformu için expo-sqlite modülünü mock'la
+config.resolver.alias = {
+  ...(config.resolver.alias || {}),
+  'expo-sqlite': require.resolve('./web-mocks/expo-sqlite.js')
+};
+
 module.exports = config;
