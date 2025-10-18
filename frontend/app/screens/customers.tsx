@@ -7,44 +7,61 @@ import {
   SafeAreaView,
   Platform,
 } from 'react-native';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, CheckCircle, Clock, XCircle } from 'lucide-react-native';
+import { getDatabase } from '@/db/database';
+
+type Customer = {
+  id: number;
+  full_name: string;
+  phone: string;
+  email: string;
+  address: string;
+  totalOrders: number;
+  totalSpent: number;
+  status: string;
+};
 
 export default function CustomersScreen() {
   const router = useRouter();
+  const [customers, setCustomers] = useState<Customer[]>([]);
 
-  const customers = [
-    {
-      id: 1,
-      name: 'Ahmet Yıldız',
-      company: 'ABC Teknoloji',
-      phone: '+90 532 123 45 67',
-      email: 'ahmet@abctek.com',
-      totalOrders: 12,
-      totalSpent: 145000,
-      status: 'active',
-    },
-    {
-      id: 2,
-      name: 'Zeynep Kaya',
-      company: 'XYZ Elektronik',
-      phone: '+90 533 987 65 43',
-      email: 'zeynep@xyzelektronik.com',
-      totalOrders: 8,
-      totalSpent: 89500,
-      status: 'active',
-    },
-    {
-      id: 3,
-      name: 'Mehmet Demir',
-      company: 'Demir Bilgisayar',
-      phone: '+90 535 555 44 33',
-      email: 'mehmet@demirbilgisayar.com',
-      totalOrders: 5,
-      totalSpent: 52000,
-      status: 'pending',
-    },
-  ];
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      loadCustomers();
+    }
+  }, []);
+
+  const loadCustomers = async () => {
+    try {
+      const db = getDatabase();
+      
+      // Müşterileri ve sipariş istatistiklerini çek
+      const result = await db.getAllAsync<Customer>(`
+        SELECT 
+          c.id,
+          c.full_name,
+          c.phone,
+          c.email,
+          c.address,
+          COUNT(o.id) as totalOrders,
+          COALESCE(SUM(o.sell_price), 0) as totalSpent,
+          CASE 
+            WHEN COUNT(o.id) > 0 THEN 'active'
+            ELSE 'pending'
+          END as status
+        FROM customers c
+        LEFT JOIN orders o ON c.id = o.customer_id
+        GROUP BY c.id, c.full_name, c.phone, c.email, c.address
+        ORDER BY c.id DESC
+      `);
+      
+      setCustomers(result || []);
+    } catch (error) {
+      console.error('Error loading customers:', error);
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
