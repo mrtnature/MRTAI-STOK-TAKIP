@@ -40,7 +40,8 @@ export default function StockScreen() {
   useEffect(() => {
     if (Platform.OS !== 'web') {
       loadStocks();
-    checkCriticalStock();
+      checkCriticalStock();
+    }
   }, []);
 
   const loadStocks = async () => {
