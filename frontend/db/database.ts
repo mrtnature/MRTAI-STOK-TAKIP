@@ -1,9 +1,16 @@
 import * as SQLite from 'expo-sqlite';
 import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 
 let db: SQLite.SQLiteDatabase | null = null;
 
 export async function initDatabase() {
+  // Web'de SQLite desteği yok, sadece native platformlarda çalışır
+  if (Platform.OS === 'web') {
+    console.log('SQLite is not supported on web. Please use mobile app.');
+    return;
+  }
+
   try {
     db = await SQLite.openDatabaseAsync('erpstok.db');
 
