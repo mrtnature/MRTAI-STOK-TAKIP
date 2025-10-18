@@ -22,4 +22,8 @@ config.cacheStores = [
 // Reduce the number of workers to decrease resource usage
 config.maxWorkers = 2;
 
+// Web için expo-sqlite'ı hariç tut
+config.resolver.platforms = ['ios', 'android', 'web'];
+config.resolver.resolverMainFields = ['react-native', 'browser', 'main'];
+
 module.exports = config;
