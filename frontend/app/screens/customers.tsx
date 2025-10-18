@@ -264,6 +264,25 @@ const styles = StyleSheet.create({
     color: '#64748b',
     textAlign: 'center',
   },
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 60,
+    paddingHorizontal: 32,
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#64748b',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  emptySubtext: {
+    fontSize: 14,
+    color: '#94a3b8',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
   card: {
     backgroundColor: '#ffffff',
     borderRadius: 12,
