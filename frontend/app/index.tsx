@@ -13,9 +13,13 @@ import WebFallback from '@/components/WebFallback';
 export default function HomeScreen() {
   const router = useRouter();
 
-  if (Platform.OS === 'web') {
-    return <WebFallback />;
-  }
+  const handleNavigation = (route: string) => {
+    if (Platform.OS === 'web') {
+      alert('Bu özellik sadece mobil cihazlarda (Android/iOS) çalışır.\n\nExpo Go uygulaması ile QR kod tarayarak test edebilirsiniz.');
+      return;
+    }
+    router.push(route as any);
+  };
 
   const menuItems = [
     {
