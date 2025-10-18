@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Plus, X } from 'lucide-react-native';
 import { getDatabase, checkCriticalStock } from '@/db/database';
+import { Picker } from '@react-native-picker/picker';
 
 type Stock = {
   id: number;
