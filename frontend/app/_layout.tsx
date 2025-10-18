@@ -5,12 +5,10 @@ import { Platform } from 'react-native';
 export default function RootLayout() {
   useEffect(() => {
     if (Platform.OS !== 'web') {
-      // Native platformlarda SQLite ve bildirimler kurulumu
       const setupNative = async () => {
         const Notifications = require('expo-notifications');
         const { initDatabase } = require('@/db/database');
         
-        // Bildirim yapılandırması
         Notifications.setNotificationHandler({
           handleNotification: async () => ({
             shouldShowAlert: true,
@@ -19,10 +17,8 @@ export default function RootLayout() {
           }),
         });
         
-        // Veritabanını başlat
         await initDatabase();
         
-        // Bildirim izinlerini iste
         const { status } = await Notifications.requestPermissionsAsync();
         if (status !== 'granted') {
           console.log('Bildirim izni verilmedi');
@@ -35,7 +31,12 @@ export default function RootLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="screens/stocks" />
+      <Stack.Screen name="screens/production-line" />
+      <Stack.Screen name="screens/production" />
+      <Stack.Screen name="screens/sales" />
+      <Stack.Screen name="screens/customers" />
     </Stack>
   );
 }
