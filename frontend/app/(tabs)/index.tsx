@@ -8,6 +8,7 @@ import {
   TextInput,
   Alert,
   SafeAreaView,
+  Platform,
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Plus, Edit2, Trash2, AlertCircle } from 'lucide-react-native';
@@ -37,7 +38,8 @@ export default function StockScreen() {
   });
 
   useEffect(() => {
-    loadStocks();
+    if (Platform.OS !== 'web') {
+      loadStocks();
     checkCriticalStock();
   }, []);
 
