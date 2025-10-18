@@ -306,7 +306,7 @@ export default function SalesScreen() {
 
       <Modal
         visible={cargoModalVisible}
-        animationType=\"slide\"
+        animationType="slide"
         transparent={true}
         onRequestClose={() => setCargoModalVisible(false)}
       >
